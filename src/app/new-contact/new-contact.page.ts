@@ -9,6 +9,7 @@ import {
   IonButtons,
   IonBackButton,
 } from '@ionic/angular/standalone';
+import { NewContactFormComponent } from '../compenents/new-contact-form/new-contact-form.component';
 
 @Component({
   selector: 'app-new-contact',
@@ -24,6 +25,7 @@ import {
     IonToolbar,
     CommonModule,
     FormsModule,
+    NewContactFormComponent,
   ],
 })
 export class NewContactPage implements OnInit {

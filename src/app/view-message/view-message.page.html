@@ -3,12 +3,19 @@
     <ion-buttons slot="start">
       <ion-back-button [text]="getBackButtonText()" defaultHref="/"></ion-back-button>
     </ion-buttons>
+    <ion-title>Detalles</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="toggleEdit()">
+        <ion-icon name="create-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 @if (message) {
 <ion-content [fullscreen]="true">
-  <ion-item>
+
+  <ion-item *ngIf="!isEditing">
     <ion-icon aria-hidden="true" name="person-circle" color="primary"></ion-icon>
     <ion-label class="ion-text-wrap">
       <h2>
@@ -18,7 +25,8 @@
       <h3>Phone: <ion-note> {{ message.phone }} </ion-note></h3>
     </ion-label>
   </ion-item>
-  <div class="ion-padding">
+
+  <div *ngIf="!isEditing" class="ion-padding">
     <div>
       <ion-button>
         <ion-icon name="call-outline"></ion-icon> Llamar
@@ -28,5 +36,11 @@
       </ion-button>
     </div>
   </div>
+
+
+  <div *ngIf="isEditing">
+    <app-edit-contact-form [contact]="message"></app-edit-contact-form>
+  </div>
 </ion-content>
+
 }

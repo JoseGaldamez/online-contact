@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ContactModelWithoutId } from '../models/contact.model';
 
 export interface ContactModel {
   name: string;
@@ -7,8 +8,6 @@ export interface ContactModel {
   phone: string;
   id: string;
 }
-
-export type ContactModelWithoutId = Omit<ContactModel, 'id'>;
 
 @Injectable({
   providedIn: 'root',
@@ -53,9 +52,50 @@ export class DataService {
 
   async addNewContact(contact: ContactModelWithoutId) {
     try {
-      const response = await fetch(`${this.URL_BASE}contact.json`, {
+      const response = await fetch(`${this.URL_BASE}contacts.json`, {
         method: 'POST',
         body: JSON.stringify(contact),
+      });
+
+      await response.json();
+      this.getMessagesFromFirebase();
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  }
+
+  async editContact(contact: ContactModel) {
+    try {
+      const editigContact: ContactModelWithoutId = {
+        name: contact.name,
+        lastname: contact.lastname,
+        email: contact.email,
+        phone: contact.phone,
+      };
+
+      const response = await fetch(
+        `${this.URL_BASE}contacts/${contact.id}.json`,
+        {
+          method: 'PUT',
+          body: JSON.stringify(editigContact),
+        }
+      );
+
+      await response.json();
+      this.getMessagesFromFirebase();
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  }
+
+  async deleteContact(id: string) {
+    try {
+      const response = await fetch(`${this.URL_BASE}contacts/${id}.json`, {
+        method: 'DELETE',
       });
 
       await response.json();
